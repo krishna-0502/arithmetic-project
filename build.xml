@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ArithLib" default="jar" basedir=".">
+
+    <!-- 1. properties -->
+    <property name="src.dir"    value="src/main/java"/>
+    <property name="build.dir"  value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"    value="${build.dir}/jar"/>
+    <property name="jar.name"   value="arithmetic.jar"/>
+
+    <!-- 2. prepare build folders -->
+    <target name="init">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+    </target>
+
+    <!-- 3. compile Java sources -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               includeantruntime="false"
+               source="17" target="17"/>
+    </target>
+
+    <!-- 4. jar the library (AInteger + AFloat only) -->
+    <target name="jar" depends="compile">
+        <jar destfile="${jar.dir}/${jar.name}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="arbitraryarithmetic.MyInfArith"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- 5. run the CLI -->
+    <target name="run" depends="jar">
+    <java jar="${jar.dir}/${jar.name}" fork="true">
+        <arg line="${args}"/>
+    </java>
+    </target>
+
+
+
+    <!-- 6. clean up -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+</project>
